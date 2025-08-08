@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.boot.learn.entity.ErrorMessage;
 
+import jakarta.validation.ConstraintViolationException;
+
 /**
  * 
  */
@@ -30,6 +32,12 @@ public class KcmResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 	public ResponseEntity<ErrorMessage> userNotFoundHandler(UserNotFoundException exc, WebRequest request) {
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND, exc.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<ErrorMessage> userNotFoundHandler(ConstraintViolationException exc, WebRequest request) {
+		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_ACCEPTABLE, exc.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
 	}
 
 }
